@@ -1,0 +1,469 @@
+
+/* Body and structure
+-------------------------------------------------- */
+html{
+	width: 100%;
+	height: 100%;
+}
+
+body {
+  background-color: #fff;
+  position: relative;
+  width: 100%;
+  height: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.full-day{
+	width: 98%;
+	min-height: 1023px;
+	background-color: red;
+	color: #fff;
+	font-size: 1.2em;
+	position: absolute;
+	top: 150px;
+	left: 1%;
+	display: none;
+	margin: 0;
+	padding: 0;
+}
+
+.full-day.active{
+	display: block;
+	right: 13px;
+	opacity: .95;
+}
+
+.full-day.active a.close{
+	position: absolute;
+	top: 1%;
+	right: 1%;
+	color: white;
+}
+
+.full-day.active>div{
+	min-height: 430px;
+	background-color: #333;
+}
+
+.full-day.active .num,
+.full-day.active .day{
+	font-size: 4em;
+	margin: 0 0 0 5px;
+	text-transform: uppercase;
+	width: 180px;
+}
+
+.full-day.active .num{
+	font-size: 6em;
+	line-height: .6em;
+}
+
+.calendar-header{
+	position: relative;
+	width: 100%;
+	height: 150px;
+	clear: both;
+}
+
+	.calendar-header .month{
+		position: absolute;
+		top: 2%;
+		left: 1%;
+		margin: 0;
+		padding: 0;
+		font-size:7em;
+	}
+
+	.calendar-header .year{
+		position: absolute;
+		bottom: 2%;
+		left: 1%;
+		font-size:42px;
+		color:red;
+	}
+
+.calendar-frame{
+	width: 98%;
+	height: 80%;
+	margin: 0 auto;
+	overflow: hidden;
+}
+
+	.calendar-tools{
+		width: 98%;
+		margin: .5% auto;
+		padding: 1%;
+		background-color: #444;
+	}
+
+		.calendar-tools .btn{
+			border: 0;
+			border-radius: 0;
+			font-size: 1.5em;
+			color: #222;
+			cursor: pointer;
+			margin: 0;
+			padding: .25em .5em;
+		}
+
+		.calendar-tools .btn:hover{
+			background-color: #dedede;
+		}
+
+		.calendar-tools .time{
+			position: absolute;
+			top: 0;
+			right: 2%;
+			padding: .6em 1em;
+			margin: 1em 0 0 0;
+			font-size:2em;
+			color: #222;
+			cursor: pointer;
+			border: 1px solid transparent;
+		}
+
+		.calendar-tools .time:hover {
+			border: 1px solid #ccc;
+			border-radius: 4px;
+		}
+
+			.calendar-tools .time.large {
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				width: 100%;
+				height: 70%;
+				line-height: 1;
+				text-align: center;
+				font-size: 15em;
+				background-color: #222;
+				color: #fff;
+				margin: auto;
+				padding: 30% 0 0 0;
+				border: 0;
+				border-radius: 0;
+				font-family: 'Open Sans', sans-serif;
+			}
+
+	.calendar-frame .calendar{
+		width: 100%;
+		height: 100%;
+	}
+
+	.calendar-frame .calendar TH{
+		font-size:2em;
+		font-weight:bold;
+	}
+
+	.calendar-frame .calendar TD{
+		position: relative;
+		height:50px;
+		font-size:24px;
+		color:#444;
+		width: 14.2857%;
+		height: 20%;
+		vertical-align: top;
+	}
+
+		.calendar-frame .calendar TD>DIV{
+			position: absolute;
+			bottom: 0;
+			cursor: pointer;
+			top: 1%;
+			left: 1%;
+			right: 1%;
+			width: 99%;
+			height: 99%;
+			background-color: #efefef;
+			overflow: hidden;
+		}
+
+		.calendar-frame .calendar TD.weekend{
+			color:#CDCDCD;
+		}
+
+		.calendar-frame .calendar TD.today,
+		.calendar-frame .calendar TD.event{
+			color: red;
+		}
+
+		.calendar-frame .calendar TD.today>DIV{
+			background-color: #dfdfdf;
+		}
+
+		.calendar-frame .calendar TD .num{
+			position: absolute;
+			top: 2%;
+			left: 5%;
+			width: 50%;
+		}
+
+		.calendar-frame .calendar TD .day{
+			position: absolute;
+			top: 2%;
+			right: 2%;
+			width: 50%;
+			display: none;
+		}
+
+		.calendar-frame .calendar TD .content{
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			padding: 4%;
+			margin: 0 auto;
+			color: #fff;
+			background-color: #333;
+		}
+
+			.calendar-frame .calendar TD .content:hover{
+				background-color: #333;
+				cursor: pointer;
+				height: 100%;
+			}
+
+			.calendar-frame .calendar TD.event>DIV{
+				background-repeat: no-repeat;
+				background-position: center;
+				background-size: cover;
+			}
+
+			.calendar-frame .calendar TD.series-1>DIV{
+				border-bottom: 5px solid #ffd659;
+			}
+
+			.calendar-frame .calendar TD.series-2>DIV{
+				border-bottom: 5px solid #b70f0a;
+			}
+
+			.calendar-frame .calendar TD.series-3>DIV{
+				border-bottom: 5px solid #2175b6;
+			}
+
+			.calendar-frame .calendar TD .content h4{
+				margin: 0;
+				font-size: .7em;
+				font-weight: normal;
+			}
+
+				.calendar-frame .calendar TD .content:hover h4{
+					font-weight: bold;
+					width: 100%;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
+
+			.calendar-frame .calendar TD .content h4 small{
+				display: block;
+				color: #dedede;
+			}
+
+				.calendar-frame .calendar TD .content:hover h4 small{
+					width: 100%;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					margin-top: 2%;
+				}
+
+			.calendar-frame .calendar TD .content .btn-group{
+				display: none;
+			}
+
+			.calendar-frame .calendar TD .content:hover .btn-group{
+				display: block;
+				margin: 5% 0;
+			}
+
+			.calendar-frame .calendar TD .content .btn-group .btn{
+				width: 33%;
+				margin: 0 auto;
+				padding: 3px 6px;
+			}
+
+				.calendar-frame .calendar TD .content .btn-group .btn span{
+					display: none;
+				}
+
+			.calendar-frame .calendar TD .content .btn-group.past .btn{
+				width: 50%;
+				margin: 0 auto;
+				padding: 3px 6px;
+			}
+
+			.calendar-frame .calendar TD .content .event-time{
+				font-size: .6em;
+				margin: 2% 0 0 0;
+			}
+
+
+@media only screen
+  and (min-device-width: 769px)
+  and (max-device-width: 1024px)
+  and (-webkit-min-device-pixel-ratio: 1) {
+	.calendar-header .month{
+		font-size:5em;
+	}
+	.calendar-header .year{
+		left: auto;
+		right: 2%;
+	}
+
+}
+
+
+@media only screen
+  and (max-width: 768px){
+
+	.calendar-header{
+		height: 50px;
+	}
+
+	.calendar-header .month{
+		top: 0;
+		left: 2%;
+		right: auto;
+		bottom: auto;
+		margin: 0;
+		font-size: 3em;
+	}
+
+	.calendar-header .year{
+		top: 0;
+		right: 2%;
+		left: auto;
+		bottom: auto;
+		margin: 0;
+		font-size: 3em;
+	}
+
+	.calendar-frame{
+		height: auto;
+		margin: 0 0 57px 0;
+	}
+
+	.calendar-frame .calendar{
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+	}
+
+		.calendar-frame .calendar TR{
+			display: block;
+			clear: both;
+		}
+
+		.calendar-frame .calendar THEAD{
+			display: none;
+		}
+
+		.calendar-frame .calendar TR TD{
+			display: block;
+			position: relative;
+			width: 100%;
+			min-height: 350px;
+		}
+
+		.calendar-frame .calendar TR TD>DIV{
+			position: absolute;
+			top: 0;
+			bottom: 0;
+		}
+
+
+		.calendar-frame .calendar TD.empty,
+		.calendar-frame .calendar TD.no-content{
+			display: none;
+		}
+
+		.calendar-frame .calendar TR TD .num{
+			left: 2%;
+			width: auto;
+			color: #fff;
+		}
+
+		.calendar-frame .calendar TR TD .day{
+			display: block;
+			right: 2%;
+			width: auto;
+			color: #fff;
+			text-transform: uppercase;
+		}
+
+		.calendar-frame .calendar TD .content{
+		}
+
+			.calendar-frame .calendar TD .content:hover{
+				height: auto;
+			}
+
+			.calendar-frame .calendar TD .content h4{
+				margin: 0;
+				font-size: .9em;
+				font-weight: bold;
+				text-transform: uppercase;
+			}
+
+				.calendar-frame .calendar TD .content:hover h4{
+				}
+
+			.calendar-frame .calendar TD .content h4 small{
+				margin-top: 0;
+			}
+
+				.calendar-frame .calendar TD .content:hover h4 small{
+					margin-top: 0;
+				}
+
+			.calendar-frame .calendar TD .content .btn-group{
+				display: block;
+				margin-top: 2%;
+			}
+
+			.calendar-frame .calendar TD .content:hover .btn-group{
+				margin-top: 2%;
+			}
+
+			.calendar-frame .calendar TD .content .btn-group .btn{
+				width: auto;
+				padding: 6px 12px;
+			}
+
+				.calendar-frame .calendar TD .content .btn-group .btn span{
+					display: inline;
+				}
+
+			.calendar-frame .calendar TD .content .btn-group.past .btn{
+				width: auto;
+				padding: 6px 12px;
+			}
+
+			.calendar-frame .calendar TD .content .event-time{
+				float: right;
+				font-size: 1em;
+			}
+
+	.calendar-tools{
+		position: fixed;
+		bottom: 0;
+		z-index: 999;
+	}
+
+		.calendar-tools .btn{
+			font-size: 1em;
+		}
+
+		.calendar-tools .time{
+			right: 2%;
+			padding: .3em 0;
+			font-size:1.7em;
+		}
+
+}
