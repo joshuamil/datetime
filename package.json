@@ -34,5 +34,8 @@
     "eslint-loader": "^1.6.1",
     "http-server": "^0.9.0",
     "webpack": "^2.2.1"
+  },
+  "dependencies": {
+    "whatwg-fetch": "^2.0.2"
   }
 }

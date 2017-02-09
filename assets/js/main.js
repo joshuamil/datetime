@@ -1,4 +1,5 @@
 import * as clock from './clock';
+import * as weather from './weather';
 import dateFormat from 'dateformat';
 
 // Render the Calendar
@@ -124,8 +125,6 @@ let renderCalendar = (mm,yy) => {
 
 			td = document.createElement('td');
 
-				console.log(dow);
-
 			// Render HTML
 			if(dow === 0){
 
@@ -175,7 +174,6 @@ let renderCalendar = (mm,yy) => {
 	let lsc = lst.cloneNode(true);
 	lst.parentNode.replaceChild(lsc, lst);
 	lsc.addEventListener('click', (event) => {
-		console.log('A');
 		renderCalendar(prv.getMonth(),prv.getFullYear());
 	});
 
@@ -183,7 +181,6 @@ let renderCalendar = (mm,yy) => {
 	let cuc = cur.cloneNode(true);
 	cur.parentNode.replaceChild(cuc, cur);
 	cuc.addEventListener('click', (event) => {
-		console.log('B');
 		renderCalendar(now.getMonth(),now.getFullYear());
 	});
 
@@ -191,34 +188,7 @@ let renderCalendar = (mm,yy) => {
 	let nec = nex.cloneNode(true);
 	nex.parentNode.replaceChild(nec, nex);
 	nec.addEventListener('click', (event) => {
-		console.log('C');
 		renderCalendar(nxt.getMonth(),nxt.getFullYear());
-	});
-
-	// Enable links and current day panel loading
-	let dayLinks = document.querySelectorAll('.calendar-frame .calendar td>div');
-	Array.from(dayLinks).forEach( link => {
-		link.addEventListener('click', (event) => {
-
-			let el = link;
-
-			let cx = document.createElement('a');
-			cx.setAttribute('href', '#');
-			cx.setAttribute('class', 'close fa fa-2x fa-close');
-
-			let fd = document.querySelector('.full-day');
-
-			let html = el.cloneNode(true);
-	    html.appendChild(cx)
-			html.addEventListener('click', () => {
-				fd.classList.toggle('active');
-			});
-
-			fd.classList.toggle('active');
-			fd.innerHTML = '';
-			fd.appendChild(html);
-
-		});
 	});
 
 };
@@ -232,6 +202,9 @@ let init = () => {
 	// Render the clock
 	clock.renderTime();
 	clock.enableButtons();
+
+	// Render the weather
+	weather.renderWeather();
 
 };
 

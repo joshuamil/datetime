@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -113,6 +113,102 @@ var enableButtons = exports.enableButtons = function enableButtons() {
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.renderWeather = undefined;
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _arguments = arguments;
+
+__webpack_require__(3);
+
+var getWeather = function getWeather() {
+
+  var storage = localStorage;
+  var city = storage.getItem('weather:city') || 'Charlotte';
+  var apiKey = 'cc97bdb0c6bbca4eb4160a921cbc9099';
+  var cached = storage.getItem('weather:' + city);
+
+  var search = getUrlParams();
+  var bust = search.bust && search.bust !== 0 || _arguments[0] === 'bust' ? true : false;
+
+  if (cached && cached.length > 0 && !bust) {
+
+    return Promise.all([{ status: 200 }, JSON.parse(cached)]);
+  } else {
+    fetch('http://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + apiKey + '&units=imperial').then(function (res) {
+      return Promise.all([res, res.json()]);
+    }).then(function (_ref) {
+      var _ref2 = _slicedToArray(_ref, 2),
+          res = _ref2[0],
+          json = _ref2[1];
+
+      storage.setItem('weather:' + city, JSON.stringify(json));
+      return Promise.all([res, json]);
+    }).catch(function (e) {
+      console.error(e);
+    });
+  }
+};
+
+var getUrlParams = function getUrlParams() {
+  var search = window.location.search;
+  var hashes = search.slice(search.indexOf('?') + 1).split('&');
+  var params = {};
+  hashes.map(function (hash) {
+    var _hash$split = hash.split('='),
+        _hash$split2 = _slicedToArray(_hash$split, 2),
+        key = _hash$split2[0],
+        val = _hash$split2[1];
+
+    params[key] = decodeURIComponent(val);
+  });
+  return params;
+};
+
+var renderWeather = exports.renderWeather = function renderWeather() {
+
+  var storage = localStorage;
+
+  var icon = document.querySelector('.weather .icon');
+  var temp = document.querySelector('.weather .temp');
+  var cond = document.querySelector('.weather .condition');
+  var humd = document.querySelector('.weather .humidity');
+  var wind = document.querySelector('.weather .wind');
+
+  var city = document.querySelector('#city');
+  var cit2 = city.cloneNode(true);
+  city.parentNode.replaceChild(cit2, city);
+  cit2.addEventListener('blur', function (event) {
+    storage.setItem('weather:city', cit2.value);
+    cit2.value = cit2.value;
+    renderWeather('bust');
+  });
+
+  cit2.value = storage.getItem('weather:city');
+
+  var weather = getWeather().then(function (_ref3) {
+    var _ref4 = _slicedToArray(_ref3, 2),
+        res = _ref4[0],
+        json = _ref4[1];
+
+    icon.innerHTML = '<img src="http://openweathermap.org/img/w/' + json.weather[0].icon + '.png" alt="' + json.weather[0].description + '" />';
+    temp.innerHTML = json.main.temp + '&deg; F';
+    cond.innerHTML = '' + json.weather[0].main;
+    humd.innerHTML = 'Humidity: ' + json.main.humidity + '%';
+    wind.innerHTML = 'Wind: ' + json.wind.speed + ' KN';
+  });
+};
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -340,7 +436,468 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 })(undefined);
 
 /***/ }),
-/* 2 */
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+(function (self) {
+  'use strict';
+
+  if (self.fetch) {
+    return;
+  }
+
+  var support = {
+    searchParams: 'URLSearchParams' in self,
+    iterable: 'Symbol' in self && 'iterator' in Symbol,
+    blob: 'FileReader' in self && 'Blob' in self && function () {
+      try {
+        new Blob();
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }(),
+    formData: 'FormData' in self,
+    arrayBuffer: 'ArrayBuffer' in self
+  };
+
+  if (support.arrayBuffer) {
+    var viewClasses = ['[object Int8Array]', '[object Uint8Array]', '[object Uint8ClampedArray]', '[object Int16Array]', '[object Uint16Array]', '[object Int32Array]', '[object Uint32Array]', '[object Float32Array]', '[object Float64Array]'];
+
+    var isDataView = function isDataView(obj) {
+      return obj && DataView.prototype.isPrototypeOf(obj);
+    };
+
+    var isArrayBufferView = ArrayBuffer.isView || function (obj) {
+      return obj && viewClasses.indexOf(Object.prototype.toString.call(obj)) > -1;
+    };
+  }
+
+  function normalizeName(name) {
+    if (typeof name !== 'string') {
+      name = String(name);
+    }
+    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
+      throw new TypeError('Invalid character in header field name');
+    }
+    return name.toLowerCase();
+  }
+
+  function normalizeValue(value) {
+    if (typeof value !== 'string') {
+      value = String(value);
+    }
+    return value;
+  }
+
+  // Build a destructive iterator for the value list
+  function iteratorFor(items) {
+    var iterator = {
+      next: function next() {
+        var value = items.shift();
+        return { done: value === undefined, value: value };
+      }
+    };
+
+    if (support.iterable) {
+      iterator[Symbol.iterator] = function () {
+        return iterator;
+      };
+    }
+
+    return iterator;
+  }
+
+  function Headers(headers) {
+    this.map = {};
+
+    if (headers instanceof Headers) {
+      headers.forEach(function (value, name) {
+        this.append(name, value);
+      }, this);
+    } else if (headers) {
+      Object.getOwnPropertyNames(headers).forEach(function (name) {
+        this.append(name, headers[name]);
+      }, this);
+    }
+  }
+
+  Headers.prototype.append = function (name, value) {
+    name = normalizeName(name);
+    value = normalizeValue(value);
+    var oldValue = this.map[name];
+    this.map[name] = oldValue ? oldValue + ',' + value : value;
+  };
+
+  Headers.prototype['delete'] = function (name) {
+    delete this.map[normalizeName(name)];
+  };
+
+  Headers.prototype.get = function (name) {
+    name = normalizeName(name);
+    return this.has(name) ? this.map[name] : null;
+  };
+
+  Headers.prototype.has = function (name) {
+    return this.map.hasOwnProperty(normalizeName(name));
+  };
+
+  Headers.prototype.set = function (name, value) {
+    this.map[normalizeName(name)] = normalizeValue(value);
+  };
+
+  Headers.prototype.forEach = function (callback, thisArg) {
+    for (var name in this.map) {
+      if (this.map.hasOwnProperty(name)) {
+        callback.call(thisArg, this.map[name], name, this);
+      }
+    }
+  };
+
+  Headers.prototype.keys = function () {
+    var items = [];
+    this.forEach(function (value, name) {
+      items.push(name);
+    });
+    return iteratorFor(items);
+  };
+
+  Headers.prototype.values = function () {
+    var items = [];
+    this.forEach(function (value) {
+      items.push(value);
+    });
+    return iteratorFor(items);
+  };
+
+  Headers.prototype.entries = function () {
+    var items = [];
+    this.forEach(function (value, name) {
+      items.push([name, value]);
+    });
+    return iteratorFor(items);
+  };
+
+  if (support.iterable) {
+    Headers.prototype[Symbol.iterator] = Headers.prototype.entries;
+  }
+
+  function consumed(body) {
+    if (body.bodyUsed) {
+      return Promise.reject(new TypeError('Already read'));
+    }
+    body.bodyUsed = true;
+  }
+
+  function fileReaderReady(reader) {
+    return new Promise(function (resolve, reject) {
+      reader.onload = function () {
+        resolve(reader.result);
+      };
+      reader.onerror = function () {
+        reject(reader.error);
+      };
+    });
+  }
+
+  function readBlobAsArrayBuffer(blob) {
+    var reader = new FileReader();
+    var promise = fileReaderReady(reader);
+    reader.readAsArrayBuffer(blob);
+    return promise;
+  }
+
+  function readBlobAsText(blob) {
+    var reader = new FileReader();
+    var promise = fileReaderReady(reader);
+    reader.readAsText(blob);
+    return promise;
+  }
+
+  function readArrayBufferAsText(buf) {
+    var view = new Uint8Array(buf);
+    var chars = new Array(view.length);
+
+    for (var i = 0; i < view.length; i++) {
+      chars[i] = String.fromCharCode(view[i]);
+    }
+    return chars.join('');
+  }
+
+  function bufferClone(buf) {
+    if (buf.slice) {
+      return buf.slice(0);
+    } else {
+      var view = new Uint8Array(buf.byteLength);
+      view.set(new Uint8Array(buf));
+      return view.buffer;
+    }
+  }
+
+  function Body() {
+    this.bodyUsed = false;
+
+    this._initBody = function (body) {
+      this._bodyInit = body;
+      if (!body) {
+        this._bodyText = '';
+      } else if (typeof body === 'string') {
+        this._bodyText = body;
+      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
+        this._bodyBlob = body;
+      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
+        this._bodyFormData = body;
+      } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
+        this._bodyText = body.toString();
+      } else if (support.arrayBuffer && support.blob && isDataView(body)) {
+        this._bodyArrayBuffer = bufferClone(body.buffer);
+        // IE 10-11 can't handle a DataView body.
+        this._bodyInit = new Blob([this._bodyArrayBuffer]);
+      } else if (support.arrayBuffer && (ArrayBuffer.prototype.isPrototypeOf(body) || isArrayBufferView(body))) {
+        this._bodyArrayBuffer = bufferClone(body);
+      } else {
+        throw new Error('unsupported BodyInit type');
+      }
+
+      if (!this.headers.get('content-type')) {
+        if (typeof body === 'string') {
+          this.headers.set('content-type', 'text/plain;charset=UTF-8');
+        } else if (this._bodyBlob && this._bodyBlob.type) {
+          this.headers.set('content-type', this._bodyBlob.type);
+        } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
+          this.headers.set('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+        }
+      }
+    };
+
+    if (support.blob) {
+      this.blob = function () {
+        var rejected = consumed(this);
+        if (rejected) {
+          return rejected;
+        }
+
+        if (this._bodyBlob) {
+          return Promise.resolve(this._bodyBlob);
+        } else if (this._bodyArrayBuffer) {
+          return Promise.resolve(new Blob([this._bodyArrayBuffer]));
+        } else if (this._bodyFormData) {
+          throw new Error('could not read FormData body as blob');
+        } else {
+          return Promise.resolve(new Blob([this._bodyText]));
+        }
+      };
+
+      this.arrayBuffer = function () {
+        if (this._bodyArrayBuffer) {
+          return consumed(this) || Promise.resolve(this._bodyArrayBuffer);
+        } else {
+          return this.blob().then(readBlobAsArrayBuffer);
+        }
+      };
+    }
+
+    this.text = function () {
+      var rejected = consumed(this);
+      if (rejected) {
+        return rejected;
+      }
+
+      if (this._bodyBlob) {
+        return readBlobAsText(this._bodyBlob);
+      } else if (this._bodyArrayBuffer) {
+        return Promise.resolve(readArrayBufferAsText(this._bodyArrayBuffer));
+      } else if (this._bodyFormData) {
+        throw new Error('could not read FormData body as text');
+      } else {
+        return Promise.resolve(this._bodyText);
+      }
+    };
+
+    if (support.formData) {
+      this.formData = function () {
+        return this.text().then(decode);
+      };
+    }
+
+    this.json = function () {
+      return this.text().then(JSON.parse);
+    };
+
+    return this;
+  }
+
+  // HTTP methods whose capitalization should be normalized
+  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT'];
+
+  function normalizeMethod(method) {
+    var upcased = method.toUpperCase();
+    return methods.indexOf(upcased) > -1 ? upcased : method;
+  }
+
+  function Request(input, options) {
+    options = options || {};
+    var body = options.body;
+
+    if (input instanceof Request) {
+      if (input.bodyUsed) {
+        throw new TypeError('Already read');
+      }
+      this.url = input.url;
+      this.credentials = input.credentials;
+      if (!options.headers) {
+        this.headers = new Headers(input.headers);
+      }
+      this.method = input.method;
+      this.mode = input.mode;
+      if (!body && input._bodyInit != null) {
+        body = input._bodyInit;
+        input.bodyUsed = true;
+      }
+    } else {
+      this.url = String(input);
+    }
+
+    this.credentials = options.credentials || this.credentials || 'omit';
+    if (options.headers || !this.headers) {
+      this.headers = new Headers(options.headers);
+    }
+    this.method = normalizeMethod(options.method || this.method || 'GET');
+    this.mode = options.mode || this.mode || null;
+    this.referrer = null;
+
+    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
+      throw new TypeError('Body not allowed for GET or HEAD requests');
+    }
+    this._initBody(body);
+  }
+
+  Request.prototype.clone = function () {
+    return new Request(this, { body: this._bodyInit });
+  };
+
+  function decode(body) {
+    var form = new FormData();
+    body.trim().split('&').forEach(function (bytes) {
+      if (bytes) {
+        var split = bytes.split('=');
+        var name = split.shift().replace(/\+/g, ' ');
+        var value = split.join('=').replace(/\+/g, ' ');
+        form.append(decodeURIComponent(name), decodeURIComponent(value));
+      }
+    });
+    return form;
+  }
+
+  function parseHeaders(rawHeaders) {
+    var headers = new Headers();
+    rawHeaders.split(/\r?\n/).forEach(function (line) {
+      var parts = line.split(':');
+      var key = parts.shift().trim();
+      if (key) {
+        var value = parts.join(':').trim();
+        headers.append(key, value);
+      }
+    });
+    return headers;
+  }
+
+  Body.call(Request.prototype);
+
+  function Response(bodyInit, options) {
+    if (!options) {
+      options = {};
+    }
+
+    this.type = 'default';
+    this.status = 'status' in options ? options.status : 200;
+    this.ok = this.status >= 200 && this.status < 300;
+    this.statusText = 'statusText' in options ? options.statusText : 'OK';
+    this.headers = new Headers(options.headers);
+    this.url = options.url || '';
+    this._initBody(bodyInit);
+  }
+
+  Body.call(Response.prototype);
+
+  Response.prototype.clone = function () {
+    return new Response(this._bodyInit, {
+      status: this.status,
+      statusText: this.statusText,
+      headers: new Headers(this.headers),
+      url: this.url
+    });
+  };
+
+  Response.error = function () {
+    var response = new Response(null, { status: 0, statusText: '' });
+    response.type = 'error';
+    return response;
+  };
+
+  var redirectStatuses = [301, 302, 303, 307, 308];
+
+  Response.redirect = function (url, status) {
+    if (redirectStatuses.indexOf(status) === -1) {
+      throw new RangeError('Invalid status code');
+    }
+
+    return new Response(null, { status: status, headers: { location: url } });
+  };
+
+  self.Headers = Headers;
+  self.Request = Request;
+  self.Response = Response;
+
+  self.fetch = function (input, init) {
+    return new Promise(function (resolve, reject) {
+      var request = new Request(input, init);
+      var xhr = new XMLHttpRequest();
+
+      xhr.onload = function () {
+        var options = {
+          status: xhr.status,
+          statusText: xhr.statusText,
+          headers: parseHeaders(xhr.getAllResponseHeaders() || '')
+        };
+        options.url = 'responseURL' in xhr ? xhr.responseURL : options.headers.get('X-Request-URL');
+        var body = 'response' in xhr ? xhr.response : xhr.responseText;
+        resolve(new Response(body, options));
+      };
+
+      xhr.onerror = function () {
+        reject(new TypeError('Network request failed'));
+      };
+
+      xhr.ontimeout = function () {
+        reject(new TypeError('Network request failed'));
+      };
+
+      xhr.open(request.method, request.url, true);
+
+      if (request.credentials === 'include') {
+        xhr.withCredentials = true;
+      }
+
+      if ('responseType' in xhr && support.blob) {
+        xhr.responseType = 'blob';
+      }
+
+      request.headers.forEach(function (value, name) {
+        xhr.setRequestHeader(name, value);
+      });
+
+      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit);
+    });
+  };
+  self.fetch.polyfill = true;
+})(typeof self !== 'undefined' ? self : undefined);
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -350,7 +907,11 @@ var _clock = __webpack_require__(0);
 
 var clock = _interopRequireWildcard(_clock);
 
-var _dateformat = __webpack_require__(1);
+var _weather = __webpack_require__(1);
+
+var weather = _interopRequireWildcard(_weather);
+
+var _dateformat = __webpack_require__(2);
 
 var _dateformat2 = _interopRequireDefault(_dateformat);
 
@@ -476,8 +1037,6 @@ var renderCalendar = function renderCalendar(mm, yy) {
 
 			td = document.createElement('td');
 
-			console.log(dow);
-
 			// Render HTML
 			if (dow === 0) {
 
@@ -523,7 +1082,6 @@ var renderCalendar = function renderCalendar(mm, yy) {
 	var lsc = lst.cloneNode(true);
 	lst.parentNode.replaceChild(lsc, lst);
 	lsc.addEventListener('click', function (event) {
-		console.log('A');
 		renderCalendar(prv.getMonth(), prv.getFullYear());
 	});
 
@@ -531,7 +1089,6 @@ var renderCalendar = function renderCalendar(mm, yy) {
 	var cuc = cur.cloneNode(true);
 	cur.parentNode.replaceChild(cuc, cur);
 	cuc.addEventListener('click', function (event) {
-		console.log('B');
 		renderCalendar(now.getMonth(), now.getFullYear());
 	});
 
@@ -539,33 +1096,7 @@ var renderCalendar = function renderCalendar(mm, yy) {
 	var nec = nex.cloneNode(true);
 	nex.parentNode.replaceChild(nec, nex);
 	nec.addEventListener('click', function (event) {
-		console.log('C');
 		renderCalendar(nxt.getMonth(), nxt.getFullYear());
-	});
-
-	// Enable links and current day panel loading
-	var dayLinks = document.querySelectorAll('.calendar-frame .calendar td>div');
-	Array.from(dayLinks).forEach(function (link) {
-		link.addEventListener('click', function (event) {
-
-			var el = link;
-
-			var cx = document.createElement('a');
-			cx.setAttribute('href', '#');
-			cx.setAttribute('class', 'close fa fa-2x fa-close');
-
-			var fd = document.querySelector('.full-day');
-
-			var html = el.cloneNode(true);
-			html.appendChild(cx);
-			html.addEventListener('click', function () {
-				fd.classList.toggle('active');
-			});
-
-			fd.classList.toggle('active');
-			fd.innerHTML = '';
-			fd.appendChild(html);
-		});
 	});
 };
 
@@ -578,6 +1109,9 @@ var init = function init() {
 	// Render the clock
 	clock.renderTime();
 	clock.enableButtons();
+
+	// Render the weather
+	weather.renderWeather();
 };
 
 // Call init when the DOM is loaded
