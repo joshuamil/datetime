@@ -89,6 +89,7 @@ var renderTime = exports.renderTime = function renderTime() {
   }
 
   document.querySelector('.time').innerHTML = hh + ":" + nn.substr(-2) + " " + tt;
+  document.querySelector('time').setAttribute('datetime', hh + ":" + nn.substr(-2) + " " + tt);
 
   var doit = function doit() {
     renderTime();
@@ -360,8 +361,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 // Render the Calendar
 var renderCalendar = function renderCalendar(mm, yy) {
 
-	console.warn('ALRIGHT, HERE WE GO!');
-
 	// HTML renderers
 	var _html = '';
 	var th = '';
@@ -379,8 +378,6 @@ var renderCalendar = function renderCalendar(mm, yy) {
 	mm = mm === undefined ? now.getMonth() : mm;
 	yy = yy === undefined ? now.getFullYear() : yy;
 
-	console.log(mm + '-' + yy);
-
 	// Create viewed date object
 	var mon = new Date(yy, mm, 1);
 	var yp = mon.getFullYear();
@@ -390,7 +387,7 @@ var renderCalendar = function renderCalendar(mm, yy) {
 
 	// Date elements
 	var m = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-	var d = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Saturday"];
+	var d = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 	var ds = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 	var n = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
@@ -435,8 +432,6 @@ var renderCalendar = function renderCalendar(mm, yy) {
 	var max = 6;
 	for (var i = 0; i >= last && i <= max; i++) {
 
-		console.log(i);
-
 		tr = document.createElement('tr');
 
 		for (var _j = 0; _j < d.length; _j++) {
@@ -447,13 +442,8 @@ var renderCalendar = function renderCalendar(mm, yy) {
 			id = '';
 
 			// Determine if we have reached the first of the month
-
-			console.log('range: ' + first + ' - ' + dow + ' - ' + n[mon.getMonth()]);
-
 			if (first >= n[mon.getMonth()]) {
 				dow = 0;
-
-				console.log('zeroed out');
 			} else if (dow > 0 && first > 0 || _j === fdom) {
 				dow++;
 				first++;
@@ -486,12 +476,15 @@ var renderCalendar = function renderCalendar(mm, yy) {
 
 			td = document.createElement('td');
 
+			console.log(dow);
+
 			// Render HTML
 			if (dow === 0) {
 
 				td.setAttribute('class', 'empty');
 				td.setAttribute('data-dow', _j);
 				td.setAttribute('data-day', day);
+				td.setAttribute('role', 'gridcell');
 				td.innerHTML = '<div>&nbsp;</div>';
 			} else if (msg.length > 0) {
 
@@ -500,6 +493,7 @@ var renderCalendar = function renderCalendar(mm, yy) {
 				td.setAttribute('data-dow', dow);
 				td.setAttribute('data-day', day);
 				td.setAttribute('data-full-date', (0, _dateformat2.default)(dt, "yyyy-MM-dd"));
+				td.setAttribute('role', 'gridcell');
 
 				_html = '<div style="' + sty + '"><div class="num">' + dow + '</div><div class="day">' + day + '</div><div class="content">' + msg + '</div></div>';
 
@@ -511,6 +505,7 @@ var renderCalendar = function renderCalendar(mm, yy) {
 				td.setAttribute('data-dow', dow);
 				td.setAttribute('data-day', day);
 				td.setAttribute('data-full-date', (0, _dateformat2.default)(dt, "yyyy-MM-dd"));
+				td.setAttribute('role', 'gridcell');
 
 				_html = '<div><div class="num">' + dow + '</div><div class="day">' + day + '</div></div>';
 

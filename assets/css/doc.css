@@ -79,7 +79,7 @@ body {
 
 	.calendar-header .year{
 		position: absolute;
-		bottom: 2%;
+		bottom: -30%;
 		left: 1%;
 		font-size:42px;
 		color:red;
@@ -88,7 +88,7 @@ body {
 .calendar-frame{
 	width: 98%;
 	height: 80%;
-	margin: 0 auto;
+	margin: 1.75em auto;
 	overflow: hidden;
 }
 
@@ -163,18 +163,20 @@ body {
 	}
 
 	.calendar-frame .calendar TH{
-		font-size:2em;
-		font-weight:bold;
+		font-size:1.5em;
+		font-weight:normal;
+		text-align: left;
 	}
 
 	.calendar-frame .calendar TD{
 		position: relative;
-		height:50px;
+		height:150px !important;
 		font-size:24px;
 		color:#444;
 		width: 14.2857%;
 		height: 20%;
 		vertical-align: top;
+		text-align: left;
 	}
 
 		.calendar-frame .calendar TD>DIV{

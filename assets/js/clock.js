@@ -11,6 +11,7 @@ export let renderTime = () => {
   }
 
   document.querySelector('.time').innerHTML = hh + ":" + nn.substr(-2) + " " + tt;
+  document.querySelector('time').setAttribute('datetime', hh + ":" + nn.substr(-2) + " " + tt);
 
   let doit = function(){
     renderTime();

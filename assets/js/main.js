@@ -4,8 +4,6 @@ import dateFormat from 'dateformat';
 // Render the Calendar
 let renderCalendar = (mm,yy) => {
 
-	console.warn('ALRIGHT, HERE WE GO!');
-
 	// HTML renderers
 	let _html = '';
 	let th = '';
@@ -23,8 +21,6 @@ let renderCalendar = (mm,yy) => {
 	mm = (mm === undefined)? now.getMonth() : mm;
 	yy = (yy === undefined)? now.getFullYear() : yy;
 
-	console.log(mm + '-' + yy);
-
 	// Create viewed date object
 	let mon = new Date(yy,mm,1);
 	let yp = mon.getFullYear();
@@ -35,7 +31,7 @@ let renderCalendar = (mm,yy) => {
 	// Date elements
 	let m = ["January","February","March","April","May","June","July","August",
 		 "September","October","November","December"];
-	let d = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Saturday"];
+	let d = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 	let ds = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 	let n = [31,28,31,30,31,30,31,31,30,31,30,31];
 
@@ -80,8 +76,6 @@ let renderCalendar = (mm,yy) => {
 	let max = 6;
 	for(let i=0;i>=last && i<=max;i++){
 
-		console.log(i);
-
 		tr = document.createElement('tr');
 
 		for(let j=0;j<d.length;j++){
@@ -92,14 +86,8 @@ let renderCalendar = (mm,yy) => {
 			id = '';
 
 			// Determine if we have reached the first of the month
-
-			console.log('range: ' + first + ' - ' + dow + ' - ' + n[mon.getMonth()]);
-
 			if(first >= n[mon.getMonth()]){
 				dow = 0;
-
-				console.log('zeroed out');
-
 			}else if((dow>0 && first>0) || (j===fdom)){
 				dow++;
 				first++;
@@ -136,12 +124,15 @@ let renderCalendar = (mm,yy) => {
 
 			td = document.createElement('td');
 
+				console.log(dow);
+
 			// Render HTML
 			if(dow === 0){
 
 				td.setAttribute('class', 'empty');
 				td.setAttribute('data-dow', j);
 				td.setAttribute('data-day', day);
+				td.setAttribute('role', 'gridcell');
 				td.innerHTML = '<div>&nbsp;</div>';
 
 			}else if(msg.length > 0){
@@ -151,6 +142,7 @@ let renderCalendar = (mm,yy) => {
 				td.setAttribute('data-dow', dow);
 				td.setAttribute('data-day', day);
 				td.setAttribute('data-full-date', dateFormat(dt,"yyyy-MM-dd"));
+				td.setAttribute('role', 'gridcell');
 
 				_html = '<div style="'+sty+'"><div class="num">' + dow + '</div><div class="day">'+day+'</div><div class="content">'+msg+'</div></div>';
 
@@ -163,6 +155,7 @@ let renderCalendar = (mm,yy) => {
 				td.setAttribute('data-dow', dow);
 				td.setAttribute('data-day', day);
 				td.setAttribute('data-full-date', dateFormat(dt,"yyyy-MM-dd"));
+				td.setAttribute('role', 'gridcell');
 
 				_html = '<div><div class="num">' + dow + '</div><div class="day">'+day+'</div></div>';
 

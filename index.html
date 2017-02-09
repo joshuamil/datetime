@@ -41,30 +41,39 @@
 
 <body>
 
-	<div class="calendar-header">
-		<h1 class="month"></h1>
-		<h2 class="year"></h2>
-	</div>
+	<header role="heading">
+		<div class="calendar-header">
+			<h1 class="month"></h1>
+			<h2 class="year"></h2>
+		</div>
+	</header>
 
-	<div class="calendar-tools">
-		<button type="button" name="last" id="last" value="Previous" class="btn btn-default">&lt;</button>
-		<button type="button" name="current" id="current" value="Current" class="btn btn-default">o</button>
-		<button type="button" name="next" id="next" value="Next" class="btn btn-default">&gt;</button>
-	</div>
+	<nav role="navigation" aria-controls="calendar">
+		<div class="calendar-tools">
+			<button type="button" name="last" id="last" value="Previous" class="btn btn-default">&lt;</button>
+			<button type="button" name="current" id="current" value="Current" class="btn btn-default">o</button>
+			<button type="button" name="next" id="next" value="Next" class="btn btn-default">&gt;</button>
+		</div>
+	</nav>
 
-	<div class="calendar-time">
-		<h3 class="time"></h3>
-	</div>
+	<time datetime="" role="marquee">
+		<div class="calendar-time">
+			<h3 class="time"></h3>
+		</div>
+	</time>
 
-	<div class="calendar-frame">
-		<table id="calendar" class="calendar">
-			<thead>
-			</thead>
-			<tbody>
-			</tbody>
-		</table>
-		<div class="full-day"></div>
-	</div>
+	<main role="main">
+		<div class="calendar-frame">
+			<table id="calendar" class="calendar" role="grid" aria-live="polite"
+				aria-relevant="additions removals">
+				<thead>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+			<div class="full-day"></div>
+		</div>
+	</main>
 
 	<!-- JavaScript -->
 	<script src="build/assets/js/main.bundle.js" type="text/javascript"></script>
