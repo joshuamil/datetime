@@ -93,44 +93,51 @@ body {
 }
 
 	.calendar-tools{
-		width: 98%;
-		margin: .5% auto;
-		padding: 1%;
-		background-color: #444;
+		position: absolute;
+		top: 7%;
+		right: 0;
+		width: 50%;
 	}
 
 		.calendar-tools .btn{
+			background-color: #fff;
 			border: 0;
 			border-radius: 0;
 			font-size: 1.5em;
-			color: #222;
+			color: #cacaca;
 			cursor: pointer;
 			margin: 0;
 			padding: .25em .5em;
 		}
 
 		.calendar-tools .btn:hover{
-			background-color: #dedede;
+			background-color: #222;
+			color: #fff;
 		}
 
-		.calendar-tools .time{
+		.calendar-time .time{
 			position: absolute;
-			top: 0;
-			right: 2%;
-			padding: .6em 1em;
-			margin: 1em 0 0 0;
-			font-size:2em;
+			top: 2%;
+			right: 0;
+			padding: .2em 0;
+			margin: .3em;
+			font-size:4em;
 			color: #222;
 			cursor: pointer;
 			border: 1px solid transparent;
 		}
 
-		.calendar-tools .time:hover {
-			border: 1px solid #ccc;
-			border-radius: 4px;
+		.calendar-time .time:hover {
+			top: 4%;
+			border: 1px solid #222;
+			background-color: #222;
+			color: #fff;
+			padding: .2em .3em .2em .5em;
+			margin: 0;
 		}
 
-			.calendar-tools .time.large {
+			.calendar-time .time.large {
+				z-index: 999;
 				position: absolute;
 				top: 0;
 				bottom: 0;
@@ -140,7 +147,7 @@ body {
 				height: 70%;
 				line-height: 1;
 				text-align: center;
-				font-size: 15em;
+				font-size: 15rem;
 				background-color: #222;
 				color: #fff;
 				margin: auto;
